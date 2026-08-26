@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0-beta.2
+
+Validation fix.
+
+- Added `http` to integration dependencies because H.I.L.D.A registers a static frontend path through Home Assistant's HTTP component.
+- Repository topics are now expected to be configured on GitHub for HACS validation.
+
+
 ## 0.4.0-beta.1
 
 First community beta.
