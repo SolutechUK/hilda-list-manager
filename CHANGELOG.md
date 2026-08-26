@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0-beta.4
+
+- Automatically registers and updates the dashboard card module.
+- Removes the manual Dashboard Resource step for normal storage-mode dashboards.
+- Falls back to frontend module injection for YAML-managed resources.
+- Cleans up the auto-created resource if the integration is removed.
+
+
 ## 0.4.0-beta.3
 
 - Sorted `manifest.json` keys in Hassfest-required order.

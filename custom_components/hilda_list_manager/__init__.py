@@ -8,7 +8,9 @@ from uuid import uuid4
 
 import voluptuous as vol
 
+from homeassistant.components import frontend
 from homeassistant.components.http import StaticPathConfig
+from homeassistant.components.lovelace.const import LOVELACE_DATA, MODE_STORAGE
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, SupportsResponse, callback
@@ -53,6 +55,10 @@ SEND_LIST_SCHEMA = vol.Schema(
 
 SET_ZONE_RULE_SERVICE = "set_zone_rule"
 CLEAR_ZONE_RULE_SERVICE = "clear_zone_rule"
+
+CARD_RESOURCE_BASE = "/hilda_list_manager/multi-list-card.js"
+CARD_RESOURCE_URL = f"{CARD_RESOURCE_BASE}?v=0.4.0-beta.4"
+CARD_RESOURCE_TYPE = "module"
 
 SET_ZONE_RULE_SCHEMA = vol.Schema(
     {
@@ -287,6 +293,61 @@ class ZoneRuleManager:
 
         self._last_sent[list_entity] = now
 
+
+async def _async_register_card_resource(hass: HomeAssistant) -> None:
+    """Register or update the H.I.L.D.A dashboard card module."""
+    lovelace_data = hass.data.get(LOVELACE_DATA)
+    if lovelace_data is None:
+        return
+
+    resources = lovelace_data.resources
+
+    if lovelace_data.resource_mode == MODE_STORAGE:
+        await resources.async_get_info()
+        existing = next(
+            (
+                item
+                for item in resources.async_items()
+                if str(item.get("url", "")).startswith(CARD_RESOURCE_BASE)
+            ),
+            None,
+        )
+
+        if existing is None:
+            await resources.async_create_item(
+                {"res_type": CARD_RESOURCE_TYPE, "url": CARD_RESOURCE_URL}
+            )
+        elif (
+            existing.get("url") != CARD_RESOURCE_URL
+            or existing.get("type") != CARD_RESOURCE_TYPE
+        ):
+            await resources.async_update_item(
+                existing["id"],
+                {"res_type": CARD_RESOURCE_TYPE, "url": CARD_RESOURCE_URL},
+            )
+        return
+
+    frontend.add_extra_js_url(hass, CARD_RESOURCE_URL)
+
+
+async def _async_remove_card_resource(hass: HomeAssistant) -> None:
+    """Remove H.I.L.D.A's frontend registration when the integration is deleted."""
+    lovelace_data = hass.data.get(LOVELACE_DATA)
+    if lovelace_data is None:
+        return
+
+    resources = lovelace_data.resources
+
+    if lovelace_data.resource_mode == MODE_STORAGE:
+        await resources.async_get_info()
+        for item in list(resources.async_items()):
+            if str(item.get("url", "")).startswith(CARD_RESOURCE_BASE):
+                await resources.async_delete_item(item["id"])
+        return
+
+    frontend.remove_extra_js_url(hass, CARD_RESOURCE_URL)
+
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up H.I.L.D.A Multi List."""
     if entry.title != "H.I.L.D.A Multi List":
@@ -314,6 +375,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             ]
         )
         domain_data["_static_registered"] = True
+
+    await _async_register_card_resource(hass)
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
@@ -459,6 +522,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         )
 
     return True
+
+
+
+async def async_remove_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Clean up the automatically registered dashboard resource."""
+    await _async_remove_card_resource(hass)
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:

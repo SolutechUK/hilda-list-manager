@@ -6,13 +6,15 @@
   ],
   "config_flow": true,
   "dependencies": [
-    "todo",
-    "http"
+    "frontend",
+    "http",
+    "lovelace",
+    "todo"
   ],
   "documentation": "https://github.com/SolutechUK/hilda-list-manager",
   "integration_type": "hub",
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/SolutechUK/hilda-list-manager/issues",
   "single_config_entry": true,
-  "version": "0.4.0-beta.3"
+  "version": "0.4.0-beta.4"
 }
