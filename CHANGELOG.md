@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0-beta.3
+
+- Sorted `manifest.json` keys in Hassfest-required order.
+
+
 ## 0.4.0-beta.2
 
 Validation fix.

@@ -1,18 +1,18 @@
 {
   "domain": "hilda_list_manager",
   "name": "H.I.L.D.A Multi List",
-  "version": "0.4.0-beta.2",
+  "codeowners": [
+    "@SolutechUK"
+  ],
   "config_flow": true,
-  "documentation": "https://github.com/SolutechUK/hilda-list-manager",
-  "issue_tracker": "https://github.com/SolutechUK/hilda-list-manager/issues",
-  "integration_type": "hub",
-  "iot_class": "local_push",
   "dependencies": [
     "todo",
     "http"
   ],
-  "codeowners": [
-    "@SolutechUK"
-  ],
-  "single_config_entry": true
+  "documentation": "https://github.com/SolutechUK/hilda-list-manager",
+  "integration_type": "hub",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/SolutechUK/hilda-list-manager/issues",
+  "single_config_entry": true,
+  "version": "0.4.0-beta.3"
 }

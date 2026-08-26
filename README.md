@@ -25,7 +25,7 @@ This is the first **community beta**.
 
 ## Beta status
 
-`0.4.0-beta.2` is intended for community testing. Back up Home Assistant before testing custom integrations, and initially use disposable H.I.L.D.A-managed lists.
+`0.4.0-beta.3` is intended for community testing. Back up Home Assistant before testing custom integrations, and initially use disposable H.I.L.D.A-managed lists.
 
 ## Install with HACS as a custom repository
 
@@ -44,7 +44,7 @@ Until the repository is accepted as a HACS default:
 
 For this beta, add one JavaScript module resource manually:
 
-`/hilda_list_manager/multi-list-card.js?v=0.4.0-beta.2`
+`/hilda_list_manager/multi-list-card.js?v=0.4.0-beta.3`
 
 Then hard-refresh the browser.
 
