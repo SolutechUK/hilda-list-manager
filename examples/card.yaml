@@ -1,0 +1,9 @@
+type: custom:multi-list-card
+title: Shopping & Trips
+accent: aqua
+lists:
+  - name: Asda
+    entity: todo.dads_shopping_list
+    image: /local/custom_icons/asda.png
+    send_icon: mdi:whatsapp
+    send_action: automation.send_shopping_list_when_matt_arrives_at_asda

@@ -1,0 +1,120 @@
+create_list:
+  name: Create list
+  description: Create a new Hilda-managed local To-do list.
+  fields:
+    name:
+      name: Name
+      description: Friendly name for the new To-do list.
+      required: true
+      example: Christmas Shopping
+      selector:
+        text:
+
+execute_actions:
+  name: Execute actions
+  description: Execute a Home Assistant action sequence selected in the H.I.L.D.A card editor.
+  fields:
+    actions:
+      name: Actions
+      description: Home Assistant action sequence.
+      required: true
+      selector:
+        object:
+
+send_list:
+  name: Send list
+  description: Format pending items from a To-do list and send them to a Notify entity or REST command.
+  fields:
+    list_entity:
+      name: To-do list
+      required: true
+      selector:
+        entity:
+          domain: todo
+    destination_type:
+      name: Destination type
+      required: true
+      selector:
+        select:
+          options:
+            - notify
+            - rest_command
+    destination:
+      name: Destination
+      required: true
+      selector:
+        text:
+    heading:
+      name: Heading
+      required: false
+      selector:
+        text:
+
+set_zone_rule:
+  name: Set zone rule
+  description: Send a list when a person enters or leaves a zone.
+  fields:
+    list_entity:
+      name: To-do list
+      required: true
+      selector:
+        entity:
+          domain: todo
+    person_entity:
+      name: Person
+      required: true
+      selector:
+        entity:
+          domain: person
+    zone_entity:
+      name: Zone
+      required: true
+      selector:
+        entity:
+          domain: zone
+    event:
+      name: Event
+      required: true
+      selector:
+        select:
+          options:
+            - enter
+            - leave
+    destination_type:
+      name: Destination type
+      required: true
+      selector:
+        select:
+          options:
+            - notify
+            - rest_command
+    destination:
+      name: Destination
+      required: true
+      selector:
+        text:
+    heading:
+      name: Heading
+      required: false
+      selector:
+        text:
+    cooldown_minutes:
+      name: Cooldown minutes
+      required: false
+      default: 10
+      selector:
+        number:
+          min: 0
+          max: 1440
+          mode: box
+
+clear_zone_rule:
+  name: Clear zone rule
+  description: Remove the zone-send rule for a list.
+  fields:
+    list_entity:
+      name: To-do list
+      required: true
+      selector:
+        entity:
+          domain: todo

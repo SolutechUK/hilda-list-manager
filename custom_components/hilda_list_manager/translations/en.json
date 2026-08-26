@@ -1,0 +1,50 @@
+{
+  "title": "H.I.L.D.A Multi List",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up H.I.L.D.A Multi List",
+        "description": "Create the local list manager. New H.I.L.D.A-managed To-do lists can then be created from the Multi List Card editor.",
+        "data": {}
+      }
+    },
+    "abort": {
+      "already_configured": "H.I.L.D.A Multi List is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Manage H.I.L.D.A lists",
+        "description": "Choose a H.I.L.D.A-created list to rename or delete.",
+        "data": {
+          "list_id": "List",
+          "action": "Action"
+        }
+      },
+      "rename": {
+        "title": "Rename H.I.L.D.A list",
+        "description": "Rename **{current_name}**. Its existing entity identity is kept.",
+        "data": {
+          "name": "New name"
+        }
+      },
+      "delete": {
+        "title": "Delete H.I.L.D.A list",
+        "description": "**{name}** currently contains **{item_count}** item(s). This permanently removes the H.I.L.D.A list and its stored items. Type the list name exactly to confirm.",
+        "data": {
+          "confirm_name": "Type the list name to confirm"
+        }
+      }
+    },
+    "error": {
+      "name_required": "Enter a name.",
+      "duplicate_name": "Another H.I.L.D.A list already has that name.",
+      "confirmation_mismatch": "The name does not match. Nothing has been deleted."
+    },
+    "abort": {
+      "no_managed_lists": "There are no H.I.L.D.A-created lists to manage yet.",
+      "list_not_found": "That H.I.L.D.A list no longer exists."
+    }
+  }
+}
