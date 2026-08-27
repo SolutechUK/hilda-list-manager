@@ -27,14 +27,14 @@ class HildaListManagerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         await self.async_set_unique_id(DOMAIN)
         self._abort_if_unique_id_configured()
 
-        if user_input is not None:
-            return self.async_create_entry(
-                title="H.I.L.D.A Multi List",
-                data={},
-                options={"lists": []},
-            )
-
-        return self.async_show_form(step_id="user")
+        # H.I.L.D.A has no required setup fields. Creating the entry
+        # immediately avoids presenting an empty setup dialog with only
+        # a Submit button.
+        return self.async_create_entry(
+            title="H.I.L.D.A Multi List",
+            data={},
+            options={"lists": []},
+        )
 
     @staticmethod
     @callback

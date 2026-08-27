@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0-beta.5
+
+- Removes the empty integration setup dialog; selecting H.I.L.D.A now creates its single config entry immediately.
+- Removes generated `__pycache__` files from the repository package.
+
+
 ## 0.4.0-beta.4
 
 - Automatically registers and updates the dashboard card module.

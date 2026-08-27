@@ -4,7 +4,7 @@
  * Dependency-free Home Assistant custom card for multiple todo.* lists.
  */
 
-const MLC_VERSION = "0.4.0-beta.4";
+const MLC_VERSION = "0.4.0-beta.5";
 const DEFAULT_ACCENT = "aqua";
 
 class MultiListCard extends HTMLElement {
