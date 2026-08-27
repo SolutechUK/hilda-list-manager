@@ -25,7 +25,7 @@ This is the first **community beta**.
 
 ## Beta status
 
-`0.4.0-beta.5` is intended for community testing. Back up Home Assistant before testing custom integrations, and initially use disposable H.I.L.D.A-managed lists.
+`0.4.0-beta.6` is intended for community testing. Back up Home Assistant before testing custom integrations, and initially use disposable H.I.L.D.A-managed lists.
 
 ## Install with HACS as a custom repository
 
@@ -53,15 +53,17 @@ A new card starts with one generic entry. In the visual editor you can:
 
 ### Switching between lists
 
-If your H.I.L.D.A card contains more than one list, the current list name is shown in the pill near the top of the card.
+If your H.I.L.D.A card contains more than one list, the current list name is shown in the centre pill near the top of the card.
 
-- **Click/tap the list name** to move to the next configured list.
+- **Click/tap the list-name pill** to open the list selector.
+- Choose the list you want directly from the dropdown.
+- Each entry shows its configured image/icon and current pending-item count.
 - The icon/image, item count and To-do items update to match the selected list.
 - H.I.L.D.A remembers the selected list in your browser.
+- The small icon on the left still steps backwards through configured lists.
 - Lists can be added, removed, renamed and reordered from the card's visual editor.
 - Existing Home Assistant `todo.*` entities can be used alongside H.I.L.D.A-managed lists.
 
-For example, a card containing `Asda → Costco → Parentals → Home to Reaseheath → Reaseheath to Home` can be cycled through simply by tapping the list-name pill.
 
 ## Send List
 

@@ -16,5 +16,5 @@
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/SolutechUK/hilda-list-manager/issues",
   "single_config_entry": true,
-  "version": "0.4.0-beta.5"
+  "version": "0.4.0-beta.6"
 }

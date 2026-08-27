@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.0-beta.6
+
+- Replaces tap-to-cycle on the centre list pill with a proper list dropdown.
+- Adds a chevron to make the list selector discoverable.
+- Dropdown shows each list's icon/image and pending-item count.
+- Keeps the left icon as a quick previous-list shortcut.
+- Updates README list-switching instructions.
+
+
 ## 0.4.0-beta.5
 
 - Removes the empty integration setup dialog; selecting H.I.L.D.A now creates its single config entry immediately.

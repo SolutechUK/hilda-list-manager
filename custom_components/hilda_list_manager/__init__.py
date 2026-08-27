@@ -57,7 +57,7 @@ SET_ZONE_RULE_SERVICE = "set_zone_rule"
 CLEAR_ZONE_RULE_SERVICE = "clear_zone_rule"
 
 CARD_RESOURCE_BASE = "/hilda_list_manager/multi-list-card.js"
-CARD_RESOURCE_URL = f"{CARD_RESOURCE_BASE}?v=0.4.0-beta.4"
+CARD_RESOURCE_URL = f"{CARD_RESOURCE_BASE}?v=0.4.0-beta.6"
 CARD_RESOURCE_TYPE = "module"
 
 SET_ZONE_RULE_SCHEMA = vol.Schema(

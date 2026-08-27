@@ -4,7 +4,7 @@
  * Dependency-free Home Assistant custom card for multiple todo.* lists.
  */
 
-const MLC_VERSION = "0.4.0-beta.5";
+const MLC_VERSION = "0.4.0-beta.6";
 const DEFAULT_ACCENT = "aqua";
 
 class MultiListCard extends HTMLElement {
@@ -20,6 +20,7 @@ class MultiListCard extends HTMLElement {
     this._loadToken = 0;
     this._lastStateSignature = "";
     this._toastTimer = null;
+    this._selectorOpen = false;
   }
 
   static getStubConfig() {
@@ -385,6 +386,7 @@ class MultiListCard extends HTMLElement {
   }
 
   _select(index) {
+    this._selectorOpen = false;
     const lists = this._visibleLists();
     if (!lists.length) return;
     this._selected = (index + lists.length) % lists.length;
@@ -397,6 +399,22 @@ class MultiListCard extends HTMLElement {
 
   _next() { this._select(this._selected + 1); }
   _previous() { this._select(this._selected - 1); }
+
+  _toggleSelector() {
+    this._selectorOpen = !this._selectorOpen;
+    this._render();
+  }
+
+  _closeSelector() {
+    if (!this._selectorOpen) return;
+    this._selectorOpen = false;
+    this._render();
+  }
+
+  _selectFromMenu(index) {
+    this._selectorOpen = false;
+    this._select(index);
+  }
 
   _visual(list, small = false) {
     const size = small ? 30 : 78;
@@ -442,6 +460,7 @@ class MultiListCard extends HTMLElement {
       return;
     }
 
+    const visibleLists = this._visibleLists();
     const list = this._current();
 
     if (!list) {
@@ -615,7 +634,13 @@ class MultiListCard extends HTMLElement {
 
         .small-logo { background: transparent; }
 
+        .selector-wrap {
+          position: relative;
+          min-width: 0;
+        }
+
         .selector {
+          width: 100%;
           min-width: 0;
           min-height: 50px;
           border-radius: 22px;
@@ -625,9 +650,85 @@ class MultiListCard extends HTMLElement {
           font-size: 17px;
           font-weight: 700;
           text-shadow: 0 0 4px #000;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          gap: 8px;
+          align-items: center;
+        }
+
+        .selector-label {
+          min-width: 0;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+        }
+
+        .selector-chevron {
+          --mdc-icon-size: 20px;
+          transition: transform .16s ease;
+        }
+
+        .selector-chevron.open {
+          transform: rotate(180deg);
+        }
+
+        .selector-menu {
+          position: absolute;
+          z-index: 30;
+          top: calc(100% + 6px);
+          left: 0;
+          right: 0;
+          border-radius: 16px;
+          overflow: hidden;
+          background: var(--ha-card-background, var(--card-background-color, #111));
+          border: 1px solid rgba(255,255,255,.10);
+          box-shadow: 0 10px 28px rgba(0,0,0,.45);
+          backdrop-filter: blur(10px);
+        }
+
+        .selector-option {
+          width: 100%;
+          min-height: 44px;
+          display: grid;
+          grid-template-columns: 28px minmax(0, 1fr) auto;
+          gap: 10px;
+          align-items: center;
+          padding: 7px 12px;
+          background: transparent;
+          color: var(--primary-text-color, #fff);
+          text-align: left;
+          border-radius: 0;
+        }
+
+        .selector-option + .selector-option {
+          border-top: 1px solid rgba(255,255,255,.06);
+        }
+
+        .selector-option:hover,
+        .selector-option.active {
+          background: rgba(255,255,255,.07);
+        }
+
+        .selector-option.active {
+          color: var(--mlc-accent);
+          font-weight: 700;
+        }
+
+        .selector-option-visual {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .selector-option-visual img {
+          width: 26px;
+          height: 26px;
+          object-fit: contain;
+        }
+
+        .selector-option-count {
+          opacity: .7;
+          font-size: 13px;
         }
 
         .send { filter: drop-shadow(0 0 4px var(--mlc-accent)); }
@@ -787,9 +888,38 @@ class MultiListCard extends HTMLElement {
             ${this._visual(list, true)}
           </button>
 
-          <button class="selector" data-action="next" title="Next list">
-            ${this._escape(list.name)}${count > 0 ? ` · ${count}` : ""}
-          </button>
+          <div class="selector-wrap">
+            <button class="selector" data-action="selector" title="Choose list">
+              <span class="selector-label">
+                ${this._escape(list.name)}${count > 0 ? ` · ${count}` : ""}
+              </span>
+              <ha-icon
+                class="selector-chevron ${this._selectorOpen ? "open" : ""}"
+                icon="mdi:chevron-down"></ha-icon>
+            </button>
+
+            ${this._selectorOpen ? `
+              <div class="selector-menu">
+                ${visibleLists.map((item, index) => {
+                  const itemCount = this._count(item);
+                  const active = index === this._selected;
+                  const visual = item.image
+                    ? `<img src="${this._escape(item.image)}" alt="">`
+                    : `<ha-icon icon="${this._escape(item.icon || "mdi:format-list-checks")}"
+                         style="--mdc-icon-size:22px"></ha-icon>`;
+                  return `
+                    <button class="selector-option ${active ? "active" : ""}"
+                            data-action="select-list"
+                            data-index="${index}">
+                      <span class="selector-option-visual">${visual}</span>
+                      <span>${this._escape(item.name)}</span>
+                      <span class="selector-option-count">${itemCount > 0 ? itemCount : ""}</span>
+                    </button>
+                  `;
+                }).join("")}
+              </div>
+            ` : ""}
+          </div>
 
           <button class="send ${hasSend ? "" : "disabled"}"
                   data-action="${hasSend ? "send" : "noop"}"
@@ -841,6 +971,11 @@ class MultiListCard extends HTMLElement {
 
         if (action === "prev") return this._previous();
         if (action === "next") return this._next();
+        if (action === "selector") return this._toggleSelector();
+        if (action === "select-list") {
+          const index = Number.parseInt(ev.currentTarget.dataset.index, 10);
+          return this._selectFromMenu(index);
+        }
         if (action === "send") return this._send();
         if (action === "noop") return;
         if (action === "mark-done") return this._markAllDone();
