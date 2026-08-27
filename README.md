@@ -25,7 +25,7 @@ This is the first **community beta**.
 
 ## Beta status
 
-`0.4.0-beta.6` is intended for community testing. Back up Home Assistant before testing custom integrations, and initially use disposable H.I.L.D.A-managed lists.
+`0.4.0-beta.7` is intended for community testing. Back up Home Assistant before testing custom integrations, and initially use disposable H.I.L.D.A-managed lists.
 
 ## Install with HACS as a custom repository
 

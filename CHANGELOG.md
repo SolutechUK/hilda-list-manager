@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0-beta.7
+
+- List selector now always shows each list's pending-item count, including `0` for empty lists.
+
+
 ## 0.4.0-beta.6
 
 - Replaces tap-to-cycle on the centre list pill with a proper list dropdown.

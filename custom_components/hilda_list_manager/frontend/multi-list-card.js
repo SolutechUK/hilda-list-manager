@@ -4,7 +4,7 @@
  * Dependency-free Home Assistant custom card for multiple todo.* lists.
  */
 
-const MLC_VERSION = "0.4.0-beta.6";
+const MLC_VERSION = "0.4.0-beta.7";
 const DEFAULT_ACCENT = "aqua";
 
 class MultiListCard extends HTMLElement {
@@ -913,7 +913,7 @@ class MultiListCard extends HTMLElement {
                             data-index="${index}">
                       <span class="selector-option-visual">${visual}</span>
                       <span>${this._escape(item.name)}</span>
-                      <span class="selector-option-count">${itemCount > 0 ? itemCount : ""}</span>
+                      <span class="selector-option-count">${itemCount}</span>
                     </button>
                   `;
                 }).join("")}
